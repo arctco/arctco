@@ -35,4 +35,4 @@ A short narrative experience about the messages you never meant to send, and the
 
 ---
 
-*Made with questionable life decisions and a lot of refactoring.*
+*Made with questionable life decisions, a lot of refactoring and a cat.*
