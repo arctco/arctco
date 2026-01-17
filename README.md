@@ -3,10 +3,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-FFB7C5?style=for-the-badge&logo=python&logoColor=333" />
   <img src="https://img.shields.io/badge/React-FFB7C5?style=for-the-badge&logo=react&logoColor=333" />
+  <img src="https://img.shields.io/badge/Godot-FFB7C5?style=for-the-badge&logo=godot-engine&logoColor=333" />
   <img src="https://img.shields.io/badge/Android-FFB7C5?style=for-the-badge&logo=android&logoColor=333" />
-  <img src="https://img.shields.io/badge/Privacy_First-FFB7C5?style=for-the-badge&logo=ghostery&logoColor=333" />
-  <a href="mailto:victorloucao.amb@gmail.com">
-    <img src="https://img.shields.io/badge/Contact_Me-FFB7C5?style=for-the-badge&logo=gmail&logoColor=333" />
   </a>
 </p>
 
@@ -26,6 +24,11 @@ My love letter to media tracking. A privacy-focused sanctuary for your movies, T
 A short narrative experience about the messages you never meant to send, and the ones you still haven't. Built entirely in Python's Tkinter. It's a retro-internet ghost story about heartbreak and the beautiful chaos of trying to say the right thing when it actually matters.
 
 * `Status:` 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ `v0.5 "still typing..." • In Development`
+
+#### **Untitled Godot Game**
+My first major step into the Godot engine, focusing on atmosphere and the "quiet" moments of discovery. It's heartfelt 3D adventure about a girl who tries her best to remind the people special to her that they’re not alone, focusing in empathy and imagination. 
+
+* `Status:` 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ `Core mechanics • In Development`
 
 ---
 
