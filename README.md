@@ -5,8 +5,7 @@
   <img src="https://img.shields.io/badge/Tkinter-FFB7C5?style=for-the-badge&logo=python&logoColor=333" />
   <img src="https://img.shields.io/badge/React-FFB7C5?style=for-the-badge&logo=react&logoColor=333" />
   <img src="https://img.shields.io/badge/Android-FFB7C5?style=for-the-badge&logo=android&logoColor=333" />
-  <img src="https://img.shields.io/badge/Steam_Deck-FFB7C5?style=for-the-badge&logo=steamdeck&logoColor=333" />
-    <img src="https://img.shields.io/badge/Privacy_First-FFB7C5?style=for-the-badge&logo=ghostery&logoColor=333" />
+  <img src="https://img.shields.io/badge/Privacy_First-FFB7C5?style=for-the-badge&logo=ghostery&logoColor=333" />
   <a href="mailto:victorloucao.amb@gmail.com">
     <img src="https://img.shields.io/badge/Contact_Me-FFB7C5?style=for-the-badge&logo=gmail&logoColor=333" />
   </a>
@@ -22,7 +21,7 @@
 #### **[cinematique](https://github.com/arctco/cinematiqueandroid)**
 My love letter to media tracking. A privacy-focused sanctuary for your movies, TV, and anime. Built to bridge the gap between platforms like Trakt and AniList without sacrificing your data to the highest bidder.
 
-* `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ `v1.7.0 "The Anime Update" • Coming Soon`
+* `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ `v1.7.0 "The ????? Update" • Coming Soon`
 
 #### **heartNET**
 A short narrative experience about the messages you never meant to send, and the ones you still haven't. Built entirely in Python's Tkinter. It's a retro-internet ghost story about heartbreak and the beautiful chaos of trying to say the right thing when it actually matters.
