@@ -2,7 +2,6 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-FFB7C5?style=for-the-badge&logo=python&logoColor=333" />
-  <img src="https://img.shields.io/badge/Tkinter-FFB7C5?style=for-the-badge&logo=python&logoColor=333" />
   <img src="https://img.shields.io/badge/React-FFB7C5?style=for-the-badge&logo=react&logoColor=333" />
   <img src="https://img.shields.io/badge/Android-FFB7C5?style=for-the-badge&logo=android&logoColor=333" />
   <img src="https://img.shields.io/badge/Privacy_First-FFB7C5?style=for-the-badge&logo=ghostery&logoColor=333" />
