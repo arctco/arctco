@@ -26,7 +26,7 @@ A short narrative experience about the messages you never meant to send, and the
 * `Status:` 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ `v0.5 "still typing..." • In Development`
 
 #### **Untitled Godot Game**
-My first major step into the Godot engine, focusing on atmosphere and the "quiet" moments of discovery. It's heartfelt 3D adventure about a girl who tries her best to remind the people special to her that they’re not alone, focusing in empathy and imagination. 
+My first major step into the Godot engine, focusing on atmosphere and the "quiet" moments of discovery. It's heartfelt 3D adventure about a girl who tries her best to remind the people special to her that they’re not alone, with a focus on empathy and imagination. 
 
 * `Status:` 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ `Core mechanics • In Development`
 
