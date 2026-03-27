@@ -18,7 +18,7 @@
 #### **[cinematique](https://github.com/arctco/cinematiqueandroid)**
 My love letter to media tracking. A privacy-focused sanctuary for your movies, TV, and anime. Built to bridge the gap between platforms like Trakt and AniList without sacrificing your data to the highest bidder.
 
-* `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `v1.7.0 "The Anime Update" • Out Now!`
+* `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `v1.7.5 the 100th release • Out Now!`
 
 ---
 
