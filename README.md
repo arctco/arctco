@@ -22,21 +22,6 @@ My love letter to media tracking. A privacy-focused sanctuary for your movies, T
 
 ---
 
-### What I'm Learning
-
-* **Local-First:** Currently battling API rate limits and sync engines so users can keep their data offline and under control.
-* **Narrative Design:** Exploring emotional realism and the "uncomfortable conversation" as a gameplay mechanic.
-* **Engineering:** Applying the precision of environmental consulting to the messy world of indie dev.
-
----
-
-### Let's Talk About...
-
-**Tech** – Local-first architecture, sync engines, Python/Tkinter limitations, Steam Deck optimization.  
-**Media** – Wholesome romance anime, narrative games, or why *The Last of Us Part II* still won't leave my brain.  
-**The Process** – Building in the quiet hours between cold coffee and existential dread.
-
----
 
 *Made with questionable life decisions, a lot of refactoring, and a cat.*
 
