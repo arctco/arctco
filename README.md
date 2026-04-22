@@ -20,6 +20,10 @@ My love letter to media tracking. A privacy-focused sanctuary for your movies, T
 
 * `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `v1.7.5 the 100th release • Out Now!`
 
+#### **heartNET**
+A short narrative experience about the messages you never meant to send, and the ones you still haven't. It's a retro-internet ghost story about heartbreak and the beautiful chaos of trying to say the right thing when it actually matters.
+
+* `Status:` 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ `v0.5 "still typing..." • In Development`
 ---
 
 
