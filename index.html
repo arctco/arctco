@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dandelion Wish — Games about connection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dusk-deep: #0f0e1a;
+    --dusk-mid: #1a1830;
+    --dusk-violet: #2d2850;
+    --amber: #e8a84c;
+    --amber-soft: #f2c47a;
+    --amber-glow: rgba(232, 168, 76, 0.15);
+    --sage: #7a9e8a;
+    --sage-soft: #a8c4b4;
+    --cream: #f5ede0;
+    --cream-dim: rgba(245, 237, 224, 0.6);
+    --cream-faint: rgba(245, 237, 224, 0.08);
+    --w95-bg: #008080;
+    --w95-window: #c0c0c0;
+    --w95-border-light: #ffffff;
+    --w95-border-dark: #808080;
+    --w95-border-darker: #404040;
+    --w95-titlebar: #000080;
+    --w95-titlebar-text: #ffffff;
+    --w95-text: #000000;
+    --w95-input: #ffffff;
+    --w95-button: #c0c0c0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dusk-deep);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--amber);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, background 0.3s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1px solid rgba(232, 168, 76, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 8vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 110%, rgba(232, 168, 76, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% -10%, rgba(122, 158, 138, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 50% at 50% 100%, rgba(45, 40, 80, 0.8) 0%, transparent 70%);
+  }
+
+  /* Firefly particles */
+  .fireflies {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .firefly {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--amber-soft);
+    border-radius: 50%;
+    box-shadow: 0 0 6px 2px rgba(242, 196, 122, 0.6);
+    animation: float var(--dur, 8s) ease-in-out infinite var(--delay, 0s);
+    opacity: 0;
+  }
+  @keyframes float {
+    0%   { transform: translate(0, 0) scale(0.8); opacity: 0; }
+    20%  { opacity: 0.8; }
+    50%  { transform: translate(var(--dx, 30px), var(--dy, -40px)) scale(1.2); opacity: 1; }
+    80%  { opacity: 0.6; }
+    100% { transform: translate(var(--dx2, -20px), var(--dy2, -80px)) scale(0.6); opacity: 0; }
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--sage);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.3s;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.5s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--amber-soft);
+    font-weight: 300;
+  }
+
+  .hero-tagline {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 300;
+    color: var(--cream-dim);
+    max-width: 440px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.75s;
+  }
+
+  .hero-scroll {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--sage);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.1s;
+  }
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--sage);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  /* Horizon line */
+  .horizon {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(232,168,76,0.3), transparent);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTION BASE ─── */
+  section {
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--sage);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--sage);
+  }
+
+  /* ─── ABOUT ─── */
+  .about {
+    padding: 10rem 8vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8vw;
+    align-items: start;
+  }
+
+  .about-left {}
+
+  .about-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 2rem;
+  }
+  .about-title em {
+    font-style: italic;
+    color: var(--amber-soft);
+  }
+
+  .about-body {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: var(--cream-dim);
+    max-width: 440px;
+  }
+  .about-body p + p { margin-top: 1.2rem; }
+
+  .about-right {
+    padding-top: 5rem;
+  }
+
+  .about-values {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .value-item {
+    border-left: 1px solid rgba(232,168,76,0.2);
+    padding-left: 1.5rem;
+  }
+  .value-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
+  }
+  .value-title {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+  }
+  .value-body {
+    font-size: 0.95rem;
+    color: var(--cream-dim);
+    line-height: 1.7;
+  }
+
+  /* ─── GAMES ─── */
+  .games {
+    padding: 6rem 8vw 10rem;
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 4rem;
+  }
+
+  /* ── heartNET card ── */
+  .game-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 3rem;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+  }
+  .game-card:hover { transform: scale(1.01); }
+
+  .card-heartnet {
+    background: var(--w95-bg);
+    border: none;
+    padding: 2rem 2rem 3rem;
+    justify-content: flex-end;
+  }
+  .card-heartnet::before, .card-heartnet::after { display: none; }
+
+  /* Win95 window */
+  .w95-window {
+    position: absolute;
+    top: 2rem; left: 2rem; right: 2rem;
+    background: var(--w95-window);
+    border-top: 2px solid var(--w95-border-light);
+    border-left: 2px solid var(--w95-border-light);
+    border-right: 2px solid var(--w95-border-darker);
+    border-bottom: 2px solid var(--w95-border-darker);
+    box-shadow: inset -1px -1px 0 var(--w95-border-dark), inset 1px 1px 0 #dfdfdf;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    z-index: 2;
+  }
+  .w95-titlebar {
+    background: var(--w95-titlebar);
+    padding: 3px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+  .w95-titlebar-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--w95-titlebar-text);
+    font-size: 0.65rem;
+    font-weight: bold;
+  }
+  .w95-icon {
+    width: 14px; height: 14px;
+    background: linear-gradient(135deg, #ff6b6b, #ff4444);
+    border: 1px solid #cc0000;
+    border-radius: 1px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px;
+    flex-shrink: 0;
+  }
+  .w95-btns {
+    display: flex; gap: 2px;
+  }
+  .w95-btn {
+    width: 16px; height: 14px;
+    background: var(--w95-window);
+    border-top: 1px solid var(--w95-border-light);
+    border-left: 1px solid var(--w95-border-light);
+    border-right: 1px solid var(--w95-border-darker);
+    border-bottom: 1px solid var(--w95-border-darker);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: #000; cursor: default;
+    line-height: 1;
+  }
+  .w95-body {
+    padding: 6px;
+    background: var(--w95-window);
+  }
+  /* messenger area */
+  .w95-chat {
+    background: var(--w95-input);
+    border-top: 2px solid var(--w95-border-dark);
+    border-left: 2px solid var(--w95-border-dark);
+    border-right: 2px solid var(--w95-border-light);
+    border-bottom: 2px solid var(--w95-border-light);
+    height: 130px;
+    overflow: hidden;
+    padding: 4px 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 3px;
+  }
+  .chat-msg {
+    font-size: 0.65rem;
+    line-height: 1.4;
+    color: #000;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+  .chat-msg.show { opacity: 1; }
+  .chat-msg .sender { font-weight: bold; }
+  .chat-msg.alice .sender { color: #000080; }
+  .chat-msg.sam .sender { color: #800000; }
+  .chat-msg.status { color: #808080; font-style: italic; }
+  .chat-msg.deleted { color: #808080; text-decoration: line-through; }
+
+  .w95-input-row {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    align-items: flex-end;
+  }
+  .w95-input-box {
+    flex: 1;
+    background: var(--w95-input);
+    border-top: 2px solid var(--w95-border-dark);
+    border-left: 2px solid var(--w95-border-dark);
+    border-right: 2px solid var(--w95-border-light);
+    border-bottom: 2px solid var(--w95-border-light);
+    height: 28px;
+    padding: 4px 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: #000;
+    display: flex;
+    align-items: center;
+  }
+  .w95-input-cursor {
+    display: inline-block;
+    width: 6px; height: 12px;
+    background: #000;
+    animation: blink95 1s step-end infinite;
+    margin-left: 1px;
+    vertical-align: middle;
+  }
+  @keyframes blink95 { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .w95-send-btn {
+    background: var(--w95-window);
+    border-top: 2px solid var(--w95-border-light);
+    border-left: 2px solid var(--w95-border-light);
+    border-right: 2px solid var(--w95-border-darker);
+    border-bottom: 2px solid var(--w95-border-darker);
+    padding: 3px 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: #000;
+    cursor: default;
+    white-space: nowrap;
+    height: 28px;
+  }
+  /* taskbar at bottom of card */
+  .w95-taskbar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 28px;
+    background: var(--w95-window);
+    border-top: 2px solid var(--w95-border-light);
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 4px;
+    z-index: 2;
+  }
+  .w95-start {
+    background: var(--w95-window);
+    border-top: 2px solid var(--w95-border-light);
+    border-left: 2px solid var(--w95-border-light);
+    border-right: 2px solid var(--w95-border-darker);
+    border-bottom: 2px solid var(--w95-border-darker);
+    padding: 2px 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: bold;
+    color: #000;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .w95-clock {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: #000;
+    border-top: 1px solid var(--w95-border-dark);
+    border-left: 1px solid var(--w95-border-dark);
+    border-right: 1px solid var(--w95-border-light);
+    border-bottom: 1px solid var(--w95-border-light);
+    padding: 2px 6px;
+  }
+  .w95-taskitem {
+    background: var(--w95-window);
+    border-top: 2px solid var(--w95-border-dark);
+    border-left: 2px solid var(--w95-border-dark);
+    border-right: 2px solid var(--w95-border-light);
+    border-bottom: 2px solid var(--w95-border-light);
+    padding: 2px 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: #000;
+  }
+
+  .card-wishing {
+    background: linear-gradient(160deg, #1a2820 0%, #0f1a14 50%, #0d1219 100%);
+    border: 1px solid rgba(168, 196, 180, 0.08);
+  }
+
+  /* Wishing bg glow */
+  .card-wishing::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 70% 20%, rgba(122,158,138,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(232,168,76,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Wishing wip badge */
+  .wip-badge {
+    position: absolute;
+    top: 2.5rem; right: 3rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+    border: 1px solid rgba(122,158,138,0.3);
+    padding: 0.3rem 0.8rem;
+    z-index: 2;
+  }
+
+  .wishing-orbs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+  }
+  .orb-1 { width: 200px; height: 200px; background: rgba(122,158,138,0.08); top: 10%; right: 15%; animation: orbFloat 7s ease-in-out infinite; }
+  .orb-2 { width: 120px; height: 120px; background: rgba(232,168,76,0.06); bottom: 30%; left: 20%; animation: orbFloat 9s ease-in-out infinite 2s; }
+  @keyframes orbFloat {
+    0%,100% { transform: translate(0,0); }
+    50% { transform: translate(12px,-18px); }
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 3;
+  }
+
+  .card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .card-heartnet .card-tag { color: var(--heartnet-green); }
+  .card-wishing .card-tag { color: var(--sage); }
+
+  .card-title {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .card-heartnet .card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    color: var(--heartnet-green);
+    text-shadow: 0 0 20px rgba(51,255,102,0.4);
+    letter-spacing: 0.05em;
+  }
+  .card-wishing .card-title {
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+
+  .card-desc {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    max-width: 360px;
+    margin-bottom: 2rem;
+  }
+  .card-heartnet .card-desc { color: rgba(51,255,102,0.5); font-family: 'DM Mono', monospace; font-size: 0.75rem; }
+  .card-wishing .card-desc { color: var(--cream-dim); }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: gap 0.3s ease;
+  }
+  .card-link::after {
+    content: '→';
+    transition: transform 0.3s ease;
+  }
+  .card-link:hover { gap: 1.25rem; }
+  .card-link:hover::after { transform: translateX(4px); }
+  .card-heartnet .card-link { color: var(--heartnet-green); }
+  .card-wishing .card-link { color: var(--sage); }
+
+  /* ─── MANIFESTO strip ─── */
+  .manifesto {
+    padding: 6rem 8vw;
+    border-top: 1px solid rgba(232,168,76,0.08);
+    border-bottom: 1px solid rgba(232,168,76,0.08);
+    display: flex;
+    align-items: center;
+    gap: 6vw;
+    overflow: hidden;
+  }
+
+  .manifesto-quote {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    line-height: 1.5;
+    color: var(--cream);
+    flex: 1;
+    max-width: 640px;
+  }
+  .manifesto-quote span { color: var(--amber-soft); }
+
+  .manifesto-right {
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .manifesto-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--sage);
+    text-transform: uppercase;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 4rem 8vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--cream-faint);
+  }
+
+  .footer-logo {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--cream-dim);
+    letter-spacing: 0.05em;
+  }
+  .footer-logo em { font-style: italic; color: var(--amber); }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .footer-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--amber); }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: rgba(245,237,224,0.2);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .about { grid-template-columns: 1fr; gap: 4rem; }
+    .about-right { padding-top: 0; }
+    .games-grid { grid-template-columns: 1fr; }
+    .manifesto { flex-direction: column; gap: 2rem; }
+    .manifesto-right { text-align: left; }
+    footer { flex-direction: column; gap: 2rem; text-align: center; }
+    .footer-links { justify-content: center; }
+  }
+
+  /* scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="fireflies" id="fireflies"></div>
+
+  <p class="hero-eyebrow">Dandelion Wish · Indie Game Studio</p>
+  <h1 class="hero-title">Games about<br><em>connection.</em></h1>
+  <p class="hero-tagline">We make small, quiet games about the emotional weight of what we share — and what we can't bring ourselves to say.</p>
+  <div class="hero-scroll">Scroll to explore</div>
+
+  <div class="horizon"></div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section class="about">
+  <div class="about-left reveal">
+    <p class="section-label">The Studio</p>
+    <h2 class="about-title">One person.<br><em>Many unsent drafts.</em></h2>
+    <div class="about-body">
+      <p>Dandelion Wish is an independent studio built around a single question: what happens in the space between what we feel and what we actually say?</p>
+      <p>We build games that sit in that gap — intimate, carefully crafted experiences that treat emotional realism as a design pillar, not an afterthought.</p>
+      <p>We ship quietly. We let things be discovered. We believe the right game finds the right person.</p>
+    </div>
+  </div>
+
+  <div class="about-right reveal" style="transition-delay: 0.2s">
+    <div class="about-values">
+      <div class="value-item">
+        <p class="value-number">01</p>
+        <p class="value-title">Emotional realism</p>
+        <p class="value-body">Not fantasy power. Not escapism. The specific texture of real, complicated feelings — rendered playable.</p>
+      </div>
+      <div class="value-item">
+        <p class="value-number">02</p>
+        <p class="value-title">Discovery over marketing</p>
+        <p class="value-body">We don't shout. We leave breadcrumbs. The games find their audience on their own terms.</p>
+      </div>
+      <div class="value-item">
+        <p class="value-number">03</p>
+        <p class="value-title">The medium as message</p>
+        <p class="value-body">Form and content are inseparable. Every UI choice, every sound, every pixel carries weight.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GAMES ─── -->
+<section class="games">
+  <p class="section-label reveal">Our Games</p>
+
+  <div class="games-grid">
+
+    <!-- heartNET -->
+    <div class="game-card card-heartnet reveal">
+
+      <!-- Win95 messenger window -->
+      <div class="w95-window">
+        <div class="w95-titlebar">
+          <div class="w95-titlebar-left">
+            <div class="w95-icon">💬</div>
+            heartNET Messenger — alice_h
+          </div>
+          <div class="w95-btns">
+            <div class="w95-btn">_</div>
+            <div class="w95-btn">□</div>
+            <div class="w95-btn">✕</div>
+          </div>
+        </div>
+        <div class="w95-body">
+          <div class="w95-chat" id="w95chat">
+            <div class="chat-msg status show">*** alice_h has joined the conversation ***</div>
+            <div class="chat-msg alice" id="cm1"><span class="sender">alice_h:</span> hey. it's been a while.</div>
+            <div class="chat-msg status" id="cm2">alice_h is typing...</div>
+            <div class="chat-msg status" id="cm3">alice_h is typing...</div>
+            <div class="chat-msg deleted" id="cm4"><span class="sender">alice_h:</span> I keep thinking about what I should have said that night</div>
+            <div class="chat-msg alice" id="cm5"><span class="sender">alice_h:</span> nevermind. how are you?</div>
+            <div class="chat-msg sam" id="cm6"><span class="sender">sam_:</span> WAIT you're actually online??? omg</div>
+          </div>
+          <div class="w95-input-row">
+            <div class="w95-input-box"><span id="inputText"></span><span class="w95-input-cursor"></span></div>
+            <div class="w95-send-btn">Send</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- taskbar -->
+      <div class="w95-taskbar">
+        <div class="w95-start">⊞ Start</div>
+        <div class="w95-taskitem">💬 heartNET</div>
+        <div class="w95-clock" id="w95clock">10:47 PM</div>
+      </div>
+
+      <div class="card-content" style="margin-bottom: 2rem;">
+        <p class="card-tag" style="color: #a8c4b4;">Debut Release · Available now</p>
+        <h3 class="card-title" style="font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--cream); font-size: clamp(1.8rem,2.8vw,2.4rem);">heartNET</h3>
+        <p class="card-desc" style="color:var(--cream-dim); font-family:'Cormorant Garamond',serif; font-size:1rem;">A retro-internet ghost story about heartbreak and the things we leave unsaid. Played inside a Windows 95 desktop.</p>
+        <a href="#" class="card-link" style="color: var(--amber);">Play on itch.io</a>
+      </div>
+    </div>
+
+    <!-- Wishing on Fireflies -->
+    <div class="game-card card-wishing reveal" style="transition-delay:0.15s">
+      <div class="wishing-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+      </div>
+      <span class="wip-badge">In Development</span>
+      <div class="card-content">
+        <p class="card-tag">Narrative · Cozy</p>
+        <h3 class="card-title">Wishing on Fireflies</h3>
+        <p class="card-desc">A cozy narrative game about a fennec fox navigating a world of quiet loss and unexpected connection. Built in Unreal Engine 5.</p>
+        <a href="#" class="card-link">Follow development</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── MANIFESTO ─── -->
+<div class="manifesto reveal">
+  <p class="manifesto-quote">"We make games about <span>the messages you never meant to send</span>, and the ones you still haven't."</p>
+  <div class="manifesto-right">
+    <p class="manifesto-name">Dandelion Wish</p>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">Dandelion <em>Wish</em></div>
+  <ul class="footer-links">
+    <li><a href="#">itch.io</a></li>
+    <li><a href="#">Twitter</a></li>
+    <li><a href="#">Newsletter</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 Dandelion Wish</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '48px';
+      ring.style.height = '48px';
+      ring.style.borderColor = 'rgba(232,168,76,0.8)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '32px';
+      ring.style.height = '32px';
+      ring.style.borderColor = 'rgba(232,168,76,0.4)';
+    });
+  });
+
+  // Fireflies
+  const ff = document.getElementById('fireflies');
+  for (let i = 0; i < 22; i++) {
+    const f = document.createElement('div');
+    f.className = 'firefly';
+    f.style.cssText = `
+      left: ${Math.random()*100}%;
+      top: ${Math.random()*100}%;
+      --dur: ${7 + Math.random()*8}s;
+      --delay: ${-Math.random()*10}s;
+      --dx: ${(Math.random()-0.5)*80}px;
+      --dy: ${-20 - Math.random()*60}px;
+      --dx2: ${(Math.random()-0.5)*60}px;
+      --dy2: ${-40 - Math.random()*80}px;
+    `;
+    ff.appendChild(f);
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Win95 clock
+  function updateClock() {
+    const now = new Date();
+    let h = now.getHours(), m = now.getMinutes();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    document.getElementById('w95clock').textContent = `${h}:${String(m).padStart(2,'0')} ${ampm}`;
+  }
+  updateClock();
+  setInterval(updateClock, 60000);
+
+  // Win95 chat animation
+  const chatMsgs = ['cm1','cm2','cm3','cm4','cm5','cm6'];
+  const delays =   [800,  1400, 2800, 3200, 4200, 5000];
+  const hideAfter = { cm2: 2600, cm3: 3000 }; // "typing..." disappears
+
+  function runChat() {
+    chatMsgs.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('show');
+    });
+    chatMsgs.forEach((id, i) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('show');
+        if (hideAfter[id]) {
+          setTimeout(() => el.classList.remove('show'), hideAfter[id] - delays[i]);
+        }
+      }, delays[i]);
+    });
+    // loop
+    setTimeout(runChat, 8000);
+  }
+  setTimeout(runChat, 600);
+</script>
+</body>
+</html>
