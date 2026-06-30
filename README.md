@@ -18,7 +18,7 @@
 #### **[cinematique](https://github.com/arctco/cinematiqueandroid)**
 My love letter to media tracking. A privacy-focused sanctuary for your movies, TV, and anime. Built to bridge the gap between platforms like Trakt and AniList without sacrificing your data to the highest bidder.
 
-* `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `v1.7.5 the 100th release • Out Now!`
+* `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `v2.0 the social update • Out Now!`
 
 #### **heartNET**
 A short narrative experience about the messages you never meant to send, and the ones you still haven't. It's a retro-internet ghost story about heartbreak and the beautiful chaos of trying to say the right thing when it actually matters.
