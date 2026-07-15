@@ -5,7 +5,6 @@
   <img src="https://img.shields.io/badge/React-FFB7C5?style=for-the-badge&logo=react&logoColor=333" />
   <img src="https://img.shields.io/badge/Godot-FFB7C5?style=for-the-badge&logo=godot-engine&logoColor=333" />
   <img src="https://img.shields.io/badge/Android-FFB7C5?style=for-the-badge&logo=android&logoColor=333" />
-  </a>
 </p>
 
 **Environmental & Sanitary Engineer** who accidentally became a developer.  
@@ -20,12 +19,17 @@ My love letter to media tracking. A privacy-focused sanctuary for your movies, T
 
 * `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `v2.0 the social update • Out Now!`
 
+#### **[kirameki](https://kirameki.cinematique.me/)**
+A dedicated, experimental anime recommendation companion for cinematique. Sync your cinematique, AniList or MyAnimeList profile to map your taste footprint using three tailored engines balancing community graphs and custom AI reasoning.
+
+* `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `Out Now!`
+
 #### **heartNET**
 A short narrative experience about the messages you never meant to send, and the ones you still haven't. It's a retro-internet ghost story about heartbreak and the beautiful chaos of trying to say the right thing when it actually matters.
 
 * `Status:` 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ `v0.5 "still typing..." • In Development`
----
 
+---
 
 *Made with questionable life decisions, a lot of refactoring, and a cat.*
 
