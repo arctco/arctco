@@ -3,11 +3,12 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-FFB7C5?style=for-the-badge&logo=python&logoColor=333" />
   <img src="https://img.shields.io/badge/React-FFB7C5?style=for-the-badge&logo=react&logoColor=333" />
+  <img src="https://img.shields.io/badge/Rust-FFB7C5?style=for-the-badge&logo=rust&logoColor=333" />
   <img src="https://img.shields.io/badge/Godot-FFB7C5?style=for-the-badge&logo=godot-engine&logoColor=333" />
   <img src="https://img.shields.io/badge/Android-FFB7C5?style=for-the-badge&logo=android&logoColor=333" />
 </p>
 
-**Environmental & Sanitary Engineer** who accidentally became a developer.  
+**Environmental & Sanitary Engineer** who accidentally became a developer.
 **Local-first developer** building things that respect your privacy, because not everything needs to be in the cloud.
 
 ---
@@ -15,16 +16,25 @@
 ### Projects in Focus
 
 #### **[cinematique](https://github.com/arctco/cinematiqueandroid)**
+
 My love letter to media tracking. A privacy-focused sanctuary for your movies, TV, and anime. Built to bridge the gap between platforms like Trakt and AniList without sacrificing your data to the highest bidder.
 
 * `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `v2.0 the social update • Out Now!`
 
+#### **[ZCOM Mod Manager](https://github.com/arctco/zcom-mod-manager)**
+
+An open-source mod manager built specifically for **Star Wars: Zero Company**, because manually throwing `.pak`, `.utoc`, and `.ucas` files into folders gets old fast. Handles mod installation, verification, conflicts, UE4SS Lua mods, safe removal, and Linux/Proton alongside Windows.
+
+* `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `v0.1 • Out Now!`
+
 #### **[kirameki](https://kirameki.cinematique.me/)**
+
 A dedicated, experimental anime recommendation companion for cinematique. Sync your cinematique, AniList or MyAnimeList profile to map your taste footprint using three tailored engines balancing community graphs and custom AI reasoning.
 
 * `Status:` 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 `Out Now!`
 
 #### **heartNET**
+
 A short narrative experience about the messages you never meant to send, and the ones you still haven't. It's a retro-internet ghost story about heartbreak and the beautiful chaos of trying to say the right thing when it actually matters.
 
 * `Status:` 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜ `v0.5 "still typing..." • In Development`
